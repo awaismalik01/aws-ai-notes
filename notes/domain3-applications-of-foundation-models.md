@@ -451,6 +451,135 @@ Raw Data → Cleaning → Deduplication → Quality Filtering → Format Convers
 > - Still needs calibration against human judgments
 
 
+### Automated Metrics — Deep Dive
+
+> **These four metrics are the standard automated tools for evaluating FM outputs without human involvement. Understand what each measures, how it works, and when to use it.**
+
+#### 1. ROUGE (Recall-Oriented Understudy for Gisting Evaluation)
+
+**What it measures:** How much of the *reference* text is captured in the *generated* text.
+
+**Focus:** **Recall** — "Did the model's output cover the important content from the reference?"
+
+**How it works:** Compares overlapping n-grams (word sequences) between the generated output and one or more reference texts.
+
+| Variant | Compares | Example |
+|---------|----------|---------|
+| **ROUGE-1** | Single words (unigrams) | Did "economy" appear in both? |
+| **ROUGE-2** | Two-word phrases (bigrams) | Did "economic growth" appear in both? |
+| **ROUGE-L** | Longest common subsequence (LCS) | What's the longest in-order word sequence shared? |
+
+**Score range:** 0 to 1 (higher = better).
+
+> **When to use:** Summarization tasks. "Did the summary capture the key points from the source?"
+>
+> **Analogy — A checklist after a meeting:**
+> The reference is the meeting agenda (topics to cover). ROUGE checks: "Of everything on the agenda, how much did the summary mention?" If the agenda had 10 topics and the summary covered 7, that's 0.7 recall.
+
+**Limitation:** Only counts word overlap. Two sentences can say the same thing with completely different words and score ROUGE = 0.
+
+---
+
+#### 2. BLEU (Bilingual Evaluation Understudy)
+
+**What it measures:** How much of the *generated* text matches the *reference* text.
+
+**Focus:** **Precision** — "Is what the model produced actually correct/relevant?"
+
+**How it works:**
+1. Counts n-gram matches (1-gram through 4-gram) between generated and reference text
+2. Applies a **brevity penalty** — penalizes outputs that are too short (prevents cheating by generating only a few high-confidence words)
+3. Combines scores across n-gram levels (usually 1 through 4)
+
+**Score range:** 0 to 1 (higher = better). Scores above 0.5 are considered very good. Even humans translating don't always hit 1.0.
+
+> **When to use:** Machine translation. "Are the translated words and phrases correct?"
+>
+> **Analogy — Grading a translation assignment:**
+> The reference is the teacher's model answer. BLEU checks: "Of all the words/phrases the student wrote, how many appear in the teacher's version?" If the student wrote 20 phrases and 16 matched the reference, that's high precision.
+
+**Why the brevity penalty exists:** Without it, a model could produce just one correct word and score 100% precision. The brevity penalty ensures you can't cheat by being too short.
+
+> **ROUGE vs. BLEU — The One-Line Distinction:**
+> - **ROUGE** = Recall = "How much of the REFERENCE did you capture?"
+> - **BLEU** = Precision = "How much of your OUTPUT is correct?"
+
+---
+
+#### 3. BERTScore
+
+**What it measures:** **Semantic similarity** between generated and reference text using contextual embeddings.
+
+**Focus:** **Meaning** — "Do the two texts mean the same thing, even if they use different words?"
+
+**How it works:**
+1. Feeds both generated and reference text through a pre-trained BERT model
+2. Each token gets a contextual embedding vector (captures meaning in context)
+3. Computes cosine similarity between the best-matching token pairs across the two texts
+4. Aggregates into precision, recall, and F1 scores
+
+**Score range:** Typically 0.8–1.0 range (higher = better). Scores are generally higher than ROUGE/BLEU because semantic matching is more lenient.
+
+> **When to use:** Any text generation where paraphrasing is acceptable. When you care about MEANING, not exact wording.
+>
+> **Analogy — A teacher grading an essay on IDEAS, not exact phrasing:**
+> - ROUGE/BLEU are like a strict teacher who only gives credit for exact wording from the textbook.
+> - BERTScore is like a thoughtful teacher who says: "You used different words than the model answer, but you clearly understood the concept — full marks."
+
+**Why BERTScore is better than ROUGE/BLEU for many tasks:**
+
+| Scenario | ROUGE/BLEU Score | BERTScore |
+|----------|-----------------|-----------|
+| Generated: "The car is fast" / Reference: "The automobile is speedy" | LOW (different words) | HIGH (same meaning) |
+| Generated: "Bank by the river" / Reference: "Financial bank" | May score high ("bank" matches) | LOW (different meanings of "bank" detected by context) |
+
+> **Key insight:** BERTScore understands synonyms, paraphrasing, and context-dependent word meanings. ROUGE/BLEU just count matching characters/words.
+
+---
+
+#### 4. Perplexity
+
+**What it measures:** How "surprised" or "uncertain" the model is when predicting the next token in a sequence.
+
+**Focus:** **Model confidence** — "How well does the model predict the text?"
+
+**How it works:**
+- Calculates the inverse probability of the test text under the model
+- Lower perplexity = the model found the text more "expected" or predictable
+- Technically: exponential of the average negative log-likelihood per token
+
+**Score range:** 1 to infinity (LOWER = better). A perfect model that always predicts correctly has perplexity = 1.
+
+| Perplexity | Interpretation |
+|------------|---------------|
+| Low (e.g., 10-50) | Model is confident and generally correct in its predictions |
+| High (e.g., 500+) | Model is surprised by the text — poor fit |
+
+> **When to use:** Comparing language models on how well they "understand" a language. A model with lower perplexity on English text is a better English language model.
+>
+> **Analogy — A fill-in-the-blank test:**
+> Give the model a sentence with blanks: "The cat sat on the ___." A good model predicts "mat" with high confidence (low perplexity). A bad model is confused and assigns equal probability to "mat," "spaceship," "democracy" (high perplexity).
+
+**Important caveats:**
+- Perplexity measures model quality, NOT task-specific performance
+- A model with great perplexity might still be bad at summarization or translation
+- Use perplexity for comparing base models; use ROUGE/BLEU/BERTScore for task evaluation
+- Not commonly used to evaluate individual outputs — more for overall model comparison
+
+---
+
+> **Summary — When to Use Which Metric:**
+>
+> | Task | Best Metric | Why |
+> |------|-------------|-----|
+> | Summarization | ROUGE | Need to know if key content was captured (recall) |
+> | Translation | BLEU | Need to know if generated phrases are correct (precision) |
+> | Paraphrase / general text | BERTScore | Care about meaning, not exact words |
+> | Comparing base language models | Perplexity | Which model "understands" language better overall |
+> | Creative / open-ended output | LLM-as-a-judge | No single correct answer to compare against |
+
+---
+
 ### Evaluating RAG Performance
 
 > **RAG has its own evaluation dimensions — both the RETRIEVAL step and the GENERATION step can fail separately.**

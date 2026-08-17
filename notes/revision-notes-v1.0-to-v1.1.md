@@ -165,7 +165,7 @@ Data Collection → EDA → Pre-processing → Feature Engineering → Model Tra
 | **Amazon Bedrock AgentCore** | ML | Managed infrastructure for deploying/running AI agents at scale | Agentic AI is a major v1.1 theme |
 | **Kiro** | Developer Tools | AI-powered development environment | AI-assisted coding now part of AI practitioner knowledge |
 | **Strands Agents** | Developer Tools | Open-source framework for building AI agents | Building custom agent logic |
-| **Amazon Q** | Developer Tools | AI assistant for AWS and enterprise use | Conversational AI for business/developer tasks |
+| **Amazon Q** | Developer Tools | AI assistant (now superseded — Q Business became Amazon Quick, Q Developer became Kiro) | Conversational AI for business/developer tasks — legacy branding still referenced in exam objectives |
 | **Amazon SageMaker JumpStart** | ML | Pre-built ML solutions and model hub | Quick model deployment and exploration |
 | **AWS Transform** | ML | Enterprise AI transformation service | Helping organizations adopt AI at scale |
 

@@ -338,8 +338,8 @@ AI systems that can autonomously plan, reason, and execute multi-step tasks usin
 | **Amazon Bedrock** | Fully managed service to access FMs via API | Building GenAI apps without managing infrastructure | "Bedrock" = foundation/base → foundation models |
 | **Amazon SageMaker AI** | Complete ML platform for building, training, and deploying models | Custom model training, fine-tuning, MLOps | "Sage" = wise → full ML wisdom/platform |
 | **SageMaker JumpStart** | Pre-built ML solutions and model hub with one-click deployment | Quick model exploration and deployment | "JumpStart" = quick start → pre-built solutions |
-| **Amazon Quick** | AI-powered business intelligence and analytics | Data visualization and business reporting | "Quick" = fast insights → BI dashboards |
-| **Kiro** | AI-powered development environment | AI-assisted coding and development | Code-focused AI IDE |
+| **Amazon Quick** | AI-powered business intelligence, analytics, and enterprise knowledge assistant (replaced Amazon Q Business) | Data visualization, business reporting, enterprise knowledge Q&A, document summarization | "Quick" = fast insights → BI + enterprise AI assistant |
+| **Kiro** | AI-powered development environment (replaced Amazon Q Developer) | AI-assisted coding, debugging, code transformation, spec-driven development | Code-focused AI IDE — the developer counterpart to Amazon Quick |
 | **Strands Agents** | Framework for building AI agents | Creating autonomous multi-step AI agents | "Strands" = weaving together → agent orchestration |
 | **Amazon Bedrock AgentCore** | Managed infrastructure for deploying and running AI agents at scale | Production agent deployment with security and observability | "AgentCore" = core infrastructure for agents |
 
@@ -369,6 +369,74 @@ AI systems that can autonomously plan, reason, and execute multi-step tasks usin
 | **Data Automation** | Process documents and extract structured data | Turn invoices into database records |
 
 > **Bedrock is the "Swiss Army knife" for GenAI on AWS** — one service that handles model access, RAG, agents, safety, evaluation, fine-tuning, and prompt management. If an exam question involves GenAI on AWS and doesn't specifically mention custom training, Bedrock is likely the answer.
+
+
+### Amazon Quick & Kiro — AI Assistants for Business and Developers
+
+> **AWS has two AI assistants — one for business users, one for developers. Know the split:**
+
+| Product | Target User | What It Does | Analogy |
+|---------|-------------|-------------|---------|
+| **Amazon Quick** | Business users (non-technical) | BI dashboards, enterprise knowledge Q&A, document summarization, content generation from internal data (replaced Amazon Q Business) | A smart executive assistant who has read every company document AND can make charts |
+| **Kiro** | Software developers | AI-powered IDE with code generation, debugging, spec-driven development, and agentic coding (replaced Amazon Q Developer) | A pair-programming partner who also knows all of AWS |
+
+> **Key history:** Amazon Q was AWS's original AI assistant brand, split into Q Business (for enterprise users) and Q Developer (for coders). Both have been superseded:
+> - **Amazon Q Business → Amazon Quick** — combines BI/analytics with enterprise knowledge assistant capabilities
+> - **Amazon Q Developer (IDE) → Kiro** — evolved into a full agentic AI development environment
+> - **AWS Chatbot → Amazon Q Developer (in chat applications)** — DevOps/cloud management alerts in Slack and Teams (this one KEPT the Q Developer name)
+
+**Amazon Quick (replaced Amazon Q Business) — Deep Dive:**
+
+| Capability | Description | Example |
+|-----------|-------------|---------|
+| **Business intelligence** | AI-powered dashboards, visualizations, and natural language querying of data | "Show me revenue by region for Q3" → auto-generates chart |
+| **Enterprise knowledge Q&A** | Connects to company data sources and answers employee questions | "What is our parental leave policy?" (answers from HR docs) |
+| **Document summarization** | Summarizes long documents, emails, meeting notes | "Summarize last week's board meeting notes" |
+| **Content generation** | Creates drafts based on internal knowledge | "Write a customer FAQ about our new product using our product specs" |
+| **Data source connectors** | Integrates with enterprise sources (S3, SharePoint, Confluence, Slack, Salesforce, databases, etc.) | Searches across ALL company data — not just one system |
+| **Access control** | Respects existing permissions — users only see answers from data they're authorized to access | Marketing team can't see HR-only documents through Quick |
+| **Admin controls & guardrails** | Admins configure topics to block, define response behavior | Block answers about confidential M&A plans |
+
+> **Key exam point about Amazon Quick:** It combines **business intelligence** (dashboards, analytics) with **enterprise knowledge assistant** capabilities (Q&A over company documents). Think of it as BI + managed RAG in one product.
+>
+> **Amazon Quick vs. Bedrock Knowledge Bases:**
+> - **Amazon Quick** = full end-to-end assistant + BI experience (chat UI, dashboards, access control, connectors) for business users
+> - **Bedrock Knowledge Bases** = RAG building block for DEVELOPERS to integrate into their own custom applications
+
+**Kiro (replaced Amazon Q Developer) — Deep Dive:**
+
+| Capability | Description | Example |
+|-----------|-------------|---------|
+| **Code generation** | Generates code from natural language descriptions | "Write a Lambda function that processes S3 events" |
+| **Code explanation** | Explains existing code in plain language | "What does this function do?" |
+| **Debugging** | Identifies and suggests fixes for bugs | "Why is this test failing?" |
+| **Code transformation** | Upgrades/migrates code (e.g., Java 8 → Java 17) | Automated language version upgrades |
+| **Spec-driven development** | Structured workflow: requirements → design → implementation tasks | Define what you want built, Kiro implements it step by step |
+| **Agentic coding** | Autonomous task execution — reads code, makes changes, runs tests, iterates | "Add pagination to the /users endpoint" → Kiro does it end-to-end |
+| **Hooks** | Automated triggers that run commands/prompts on events (file save, task completion) | Auto-lint on save, run tests after implementing a task |
+| **Security scanning** | Detects vulnerabilities in code | Finds insecure dependencies, hardcoded secrets |
+
+> **Kiro vs. Amazon Q Developer — Why the change matters for the exam:**
+> - Kiro is an **agentic** AI development environment — it doesn't just suggest code, it autonomously completes multi-step tasks
+> - This aligns with the v1.1 exam's heavy emphasis on agentic AI
+> - Kiro supports MCP (Model Context Protocol) for connecting to external tools — another v1.1 topic
+
+> **Note — "Amazon Q Developer in chat applications" (formerly AWS Chatbot):**
+> - AWS Chatbot was renamed to **Amazon Q Developer in chat applications**
+> - It handles **DevOps and cloud management alerts** in Slack and Microsoft Teams
+> - Sends notifications for CloudWatch alarms, AWS Health events, Security Hub findings, etc.
+> - Allows running AWS CLI commands directly from chat channels
+> - This is a DIFFERENT product from Kiro — don't confuse them:
+>   - **Kiro** = AI-powered IDE for writing code (replaced Q Developer the coding assistant)
+>   - **Amazon Q Developer in chat applications** = ChatOps tool for DevOps alerts and cloud management in Slack/Teams (renamed from AWS Chatbot)
+
+> **Exam scenario shortcuts:**
+> - "Employees need to ask questions about internal company documents" → **Amazon Quick**
+> - "Developers need AI-powered coding assistance in their IDE" → **Kiro**
+> - "Need to build a custom AI-powered Q&A app for customers" → **Amazon Bedrock** (Knowledge Bases + custom app)
+> - "Need to search across SharePoint, Confluence, and S3 with one interface" → **Amazon Quick** (enterprise connectors)
+> - "Autonomous AI that reads code, makes changes, and runs tests" → **Kiro** (agentic development)
+> - "Need BI dashboards with natural language querying" → **Amazon Quick**
 
 
 ### Advantages of Using AWS GenAI Services
@@ -410,6 +478,35 @@ AI systems that can autonomously plan, reason, and execute multi-step tasks usin
 > 4. Use BATCH for anything that doesn't need real-time responses
 > 5. Enable PROMPT CACHING for repeated context (system prompts)
 > 6. Consider FINE-TUNING a small model instead of always using a large one
+
+### Bedrock – Cost Savings Cheat Sheet
+
+> **What DOES and DOESN'T affect your Bedrock bill:**
+
+| Factor | Impact on Cost | Details |
+|--------|---------------|---------|
+| **Number of Input/Output Tokens** | **Main cost driver** | More tokens = more money. Every word in your prompt (input) and response (output) is billed. This is the #1 lever for cost control. |
+| **Model size** | High impact | Smaller models (e.g., Haiku) are significantly cheaper per token than larger models (e.g., Sonnet, Opus). Use the smallest model that meets your quality bar. |
+| **Pricing mode (On-Demand)** | No discount, maximum flexibility | Great for unpredictable workloads. No long-term commitment. Pay per token as you go. |
+| **Pricing mode (Batch)** | **Up to 50% discount** | Submit jobs that don't need real-time responses. AWS processes them when capacity is available. Best cost-saving option for bulk work. |
+| **Pricing mode (Provisioned Throughput)** | Usually NOT a cost-saving measure | Designed to **reserve capacity** and guarantee throughput — not primarily to save money. Choose when you need consistent performance, not lower bills. |
+| **Temperature** | **No impact on pricing** | Changing temperature does NOT change cost. It only affects output quality/creativity. |
+| **Top K** | **No impact on pricing** | Inference parameter only — does not affect token count or billing. |
+| **Top P** | **No impact on pricing** | Inference parameter only — does not affect token count or billing. |
+
+> **Critical exam distinction:**
+> - "Need to save money on large batch processing jobs?" → **Batch inference** (up to 50% off)
+> - "Need guaranteed capacity for a high-traffic app?" → **Provisioned Throughput** (not about saving money — about reserving capacity)
+> - "Unpredictable usage, just getting started?" → **On-Demand** (flexible, no commitment)
+>
+> **Common exam trap:** A question may present Provisioned Throughput as a cost-saving measure. It's NOT — it's about performance guarantees and capacity reservation. Batch is the cost-saving option.
+
+> **What to optimize to reduce costs:**
+> 1. Reduce token count (shorter prompts, concise instructions, limit output length with max_tokens)
+> 2. Use batch inference for non-urgent workloads (up to 50% savings)
+> 3. Choose a smaller model when possible
+> 4. Use prompt caching for repeated system prompts
+> 5. DON'T bother adjusting temperature/top_k/top_p for cost — they have zero effect on pricing
 
 ---
 

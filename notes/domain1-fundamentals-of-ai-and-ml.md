@@ -798,6 +798,27 @@ Winner: Attempt 4 (best balance of performance and generalization)
 > - Model overfitting? → Tuning might add regularization, decrease epochs, use dropout, reduce model complexity
 > - Hyperparameter tuning is one of the PRIMARY tools for fixing fit problems
 
+### How to Prevent Overfitting
+
+> **Overfitting = the model memorized the training data instead of learning general patterns.** It performs great on training data but poorly on new, unseen data.
+
+| Technique | How It Helps | Analogy |
+|-----------|-------------|---------|
+| **Increase training data size** | More examples = harder to memorize, easier to find true patterns | The more exam questions you study, the harder it is to just memorize answers — you start understanding the concepts |
+| **Early stopping** | Stop training before the model starts memorizing noise | Quitting while you're ahead — studying too long leads to memorizing typos in the textbook |
+| **Data augmentation** | Create variations of existing data (rotate images, add noise, synonym replacement) to increase diversity | Seeing the same concept from different angles — like studying with flashcards shuffled differently each time |
+| **Adjust hyperparameters** | Increase regularization, decrease model complexity, add dropout, reduce epochs | Tuning the study conditions — not HOW MANY hyperparameters (you can't "add" new ones), but changing their VALUES |
+| **Ensembling** | Combine multiple models and aggregate their predictions (voting, averaging) | Getting a second opinion — if 3 out of 5 doctors agree on a diagnosis, you're more confident than asking just one |
+
+> **Key exam trap:** You can **adjust** hyperparameters to prevent overfitting (e.g., increase regularization strength, increase dropout rate). But you cannot "add hyperparameters" — that's not a valid technique. Hyperparameters are defined by the algorithm; you only tune their values.
+
+> **Quick decision guide:**
+> - Have more data available? → **Increase training data** (simplest and most effective)
+> - Limited data? → **Data augmentation** (artificially expand your dataset)
+> - Training metrics diverge from validation? → **Early stopping** (halt training when validation loss starts increasing)
+> - Model too complex for the data? → **Adjust hyperparameters** (add regularization, reduce layers/neurons)
+> - Multiple models available? → **Ensembling** (combine them for a more robust result)
+
 ---
 
 ### Sources of FM Models
@@ -830,8 +851,8 @@ Winner: Attempt 4 (best balance of performance and generalization)
 | Model selection | Amazon Bedrock, SageMaker JumpStart | Compare and pick the best model for your task |
 | Deployment | SageMaker Endpoints, Amazon Bedrock | SageMaker = custom models; Bedrock = FM APIs |
 | Monitoring | SageMaker Model Monitor, Amazon CloudWatch | Detect drift, quality issues, performance problems |
-| AI-assisted development | Amazon Q, Kiro | Coding assistance and AI-powered IDEs |
-| Business intelligence | Amazon Quick | AI-powered dashboards and analytics |
+| AI-assisted development | Kiro | Agentic AI-powered IDE (replaced Amazon Q Developer) |
+| Business intelligence & enterprise knowledge | Amazon Quick | AI-powered dashboards, analytics, and enterprise knowledge assistant (replaced Amazon Q Business) |
 
 ### Amazon SageMaker AI — Full Summary
 
